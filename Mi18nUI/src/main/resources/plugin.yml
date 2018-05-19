@@ -1,0 +1,6 @@
+name: ${project.name}
+version: ${project.version}
+main: ${mainClass}
+prefix: Mi18nUI
+author: ${author}
+description: ${project.description}
