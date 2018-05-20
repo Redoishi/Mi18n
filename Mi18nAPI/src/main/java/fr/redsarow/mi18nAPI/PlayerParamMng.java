@@ -1,6 +1,7 @@
 package fr.redsarow.mi18nAPI;
 
 import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
+import fr.redsarow.mi18nAPI.save.SaveFactory;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -13,12 +14,22 @@ import java.util.UUID;
  */
 public class PlayerParamMng {
 
+    private static PlayerParamMng ourInstance;
+
     private HashMap<UUID, Locale> playerLocal;
     private ISavePlayerParam iSavePlayerParam;
 
-    public PlayerParamMng(ISavePlayerParam iSavePlayerParam) {
+    private PlayerParamMng(ISavePlayerParam iSavePlayerParam) {
         this.playerLocal = new HashMap<>();
         this.iSavePlayerParam = iSavePlayerParam;
+    }
+
+    public static void initInstance() {
+        new PlayerParamMng(SaveFactory.getSavePlayerParam());
+    }
+
+    public static PlayerParamMng getInstance() {
+        return ourInstance;
     }
 
     public Locale getPlayerLocal(Player player) {

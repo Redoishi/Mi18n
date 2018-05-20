@@ -49,6 +49,8 @@ public class Mi18nAPI extends JavaPlugin {
             LOGGER.info(LANGUAGE_BUNDLE.getString("init.save"));
             SaveFactory.initSave(this, config.getString("save"));
 
+            PlayerParamMng.initInstance();
+
         } catch (Exception e) {
             LOGGER.severe(e.getLocalizedMessage());
             e.printStackTrace();
