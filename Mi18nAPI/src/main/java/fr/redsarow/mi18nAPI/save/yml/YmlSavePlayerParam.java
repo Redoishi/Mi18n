@@ -40,6 +40,9 @@ public class YmlSavePlayerParam extends AYmlSave implements ISavePlayerParam {
     @Override
     public Locale getLocalForPlayer(Player player) {
         String playerUUID = player.getUniqueId().toString();
+        if (configFile.get(playerUUID) == null) {
+            return null;
+        }
         String languae = configFile.getString(playerUUID + "." + LANGUAGE);
         String country = configFile.getString(playerUUID + "." + COUNTRY, "");
         return new Locale(languae, country);
