@@ -15,6 +15,7 @@
 
     <properties>
         <mainClass>fr.redsarow.mi18nAPI.Mi18nAPI</mainClass>
+        <manifest>META-INF/MANIFEST.MF</manifest>
     </properties>
 
 
