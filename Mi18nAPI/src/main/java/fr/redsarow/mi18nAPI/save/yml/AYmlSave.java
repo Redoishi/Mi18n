@@ -19,7 +19,7 @@ public abstract class AYmlSave {
             if (!mkdirs) {
                 return false;
             }
-            MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.create.folder"));
+            MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.yml.create.folder"));
             LOGGER.info(MESSAGE_FORMAT.format(dataFolder));
         }
 
@@ -29,7 +29,7 @@ public abstract class AYmlSave {
             if (!newFile) {
                 return false;
             }
-            MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.create.file"));
+            MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.yml.create.file"));
             LOGGER.info(MESSAGE_FORMAT.format(fileName));
         }
         return true;
