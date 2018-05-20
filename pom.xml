@@ -19,6 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <author>redsarow</author>
+        <manifest>META-INF/MANIFEST.MF</manifest>
     </properties>
 
     <licenses>
@@ -92,7 +93,7 @@
                 <configuration>
                     <finalName>${name}-${version}</finalName>
                     <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestFile>${manifest}</manifestFile>
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
