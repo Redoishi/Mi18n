@@ -2,3 +2,14 @@
 
 # ne pas modifier la version
 version: 1.0
+
+# From https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-java.lang.String-:
+#  An ISO 639 alpha-2 or alpha-3 language code,
+#   or a language subtag up to 8 characters in length.
+#   See the Locale class description about valid language values.
+# ex: en, fr, ...
+language: "en"
+#  An ISO 3166 alpha-2 country code or a UN M.49 numeric-3 area code.
+#   See the Locale class description about valid country values.
+# ex: EN, FR, ...
+country: "EN"
