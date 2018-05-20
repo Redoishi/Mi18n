@@ -5,13 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static fr.redsarow.mi18nAPI.Mi18nAPI.DEFAULT_SERVER_LOCAL;
-import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
+import static fr.redsarow.mi18nAPI.Mi18nAPI.*;
 
 /**
  * @author redsarow
@@ -26,11 +23,12 @@ public class I18n {
 
     private final URLClassLoader classLoader;
 
-    public I18n(Class clientClass, String baseName, Locale defaultLocale, List<Locale> locales) throws URISyntaxException {
-        LOGGER.info("new plugin "+clientClass.getName()+" for baseName "+baseName);
+    public I18n(Class clientClass, String baseName, Locale defaultLocale, Locale... locales) throws URISyntaxException {
+        MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("I18n.init"));
+        LOGGER.info(MESSAGE_FORMAT.format(new String[]{clientClass.getName(), baseName}));
 
         this.defaultLocale = defaultLocale;
-        this.locales = locales;
+        this.locales = Arrays.stream(locales).collect(Collectors.toList());
         this.bundleHashMap = new HashMap<>();
         this.baseName = baseName;
 
@@ -46,20 +44,20 @@ public class I18n {
         classLoader = new URLClassLoader(urls, null);
     }
 
-    private ResourceBundle getResourceBundle (Locale locale){
-        if (locale==null) {
+    private ResourceBundle getResourceBundle(Locale locale) {
+        if (locale == null) {
             locale = defaultLocale;
         }
 
         if (!defaultLocale.equals(locale) && !this.locales.contains(locale)) {
-            if(this.locales.contains(DEFAULT_SERVER_LOCAL)){
-                locale=DEFAULT_SERVER_LOCAL;
-            }else{
-                locale=defaultLocale;
+            if (this.locales.contains(DEFAULT_SERVER_LOCAL)) {
+                locale = DEFAULT_SERVER_LOCAL;
+            } else {
+                locale = defaultLocale;
             }
         }
         ResourceBundle resourceBundle = bundleHashMap.get(locale);
-        if(resourceBundle == null){
+        if (resourceBundle == null) {
             resourceBundle = ResourceBundle.getBundle(this.baseName, locale, classLoader);
             bundleHashMap.put(locale, resourceBundle);
         }
@@ -67,7 +65,28 @@ public class I18n {
         return resourceBundle;
     }
 
-    public String get(String key){
-        return "";//TODO
+    /**
+     * method use for write in console.
+     * @param key
+     *
+     * @return
+     */
+    public String get(String key) {
+        ResourceBundle resourceBundle = getResourceBundle(DEFAULT_SERVER_LOCAL);
+        return resourceBundle.getString(key);
     }
+
+    //<editor-fold desc="default get">
+    public Locale getDefaultLocale() {
+        return defaultLocale;
+    }
+
+    public List<Locale> getLocales() {
+        return locales;
+    }
+
+    public String getBaseName() {
+        return baseName;
+    }
+    //</editor-fold>
 }
