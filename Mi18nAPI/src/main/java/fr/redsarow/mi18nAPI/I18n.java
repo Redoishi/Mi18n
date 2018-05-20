@@ -1,5 +1,7 @@
 package fr.redsarow.mi18nAPI;
 
+import org.bukkit.entity.Player;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -15,6 +17,11 @@ import static fr.redsarow.mi18nAPI.Mi18nAPI.*;
  * @since 1.0.0
  */
 public class I18n {
+
+    private static PlayerParamMng PLAYER_PARAM_MNG;
+    static void setPlayerParam(PlayerParamMng playerParam){
+        PLAYER_PARAM_MNG = playerParam;
+    }
 
     private final HashMap<Locale, ResourceBundle> bundleHashMap;
     private final Locale defaultLocale;
@@ -67,6 +74,7 @@ public class I18n {
 
     /**
      * method use for write in console.
+     *
      * @param key
      *
      * @return
@@ -74,6 +82,17 @@ public class I18n {
     public String get(String key) {
         ResourceBundle resourceBundle = getResourceBundle(DEFAULT_SERVER_LOCAL);
         return resourceBundle.getString(key);
+    }
+
+    public String get(Player player, String key) {
+        ResourceBundle resourceBundle = getResourceBundle(PLAYER_PARAM_MNG.getPlayerLocal(player));
+        return resourceBundle.getString(key);
+    }
+
+    public String get(Player player, String key, Object ... param) {
+        ResourceBundle resourceBundle = getResourceBundle(PLAYER_PARAM_MNG.getPlayerLocal(player));
+        MESSAGE_FORMAT.applyPattern(resourceBundle.getString(key));
+        return MESSAGE_FORMAT.format(param);
     }
 
     //<editor-fold desc="default get">

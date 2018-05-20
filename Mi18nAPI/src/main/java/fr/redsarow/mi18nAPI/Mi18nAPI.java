@@ -50,6 +50,7 @@ public class Mi18nAPI extends JavaPlugin {
             SaveFactory.initSave(this, config.getString("save"));
 
             PlayerParamMng.initInstance();
+            I18n.setPlayerParam(PlayerParamMng.getInstance());
 
         } catch (Exception e) {
             LOGGER.severe(e.getLocalizedMessage());
