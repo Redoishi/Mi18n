@@ -30,4 +30,20 @@ public class PlayerParamMng {
         playerLocal.put(uniqueId, localForPlayer);
         return localForPlayer;
     }
+
+    public boolean setPlayerLocal(Player player, Locale locale){
+        boolean ok = iSavePlayerParam.saveLocalForPlayer(player, locale);
+        if(ok){
+            playerLocal.put(player.getUniqueId(), locale);
+        }
+        return ok;
+    }
+
+    public boolean rmPlayerLocal(Player player){
+        boolean ok = iSavePlayerParam.rmLocalForPlayer(player);
+        if(ok){
+            playerLocal.remove(player.getUniqueId());
+        }
+        return ok;
+    }
 }
