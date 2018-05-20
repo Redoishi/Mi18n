@@ -50,7 +50,7 @@ public class Mi18nAPI extends JavaPlugin {
             SaveFactory.initSave(this, config.getString("save"));
 
         } catch (Exception e) {
-            getLogger().severe(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             e.printStackTrace();
             this.getPluginLoader().disablePlugin(this);
         }
@@ -58,6 +58,6 @@ public class Mi18nAPI extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        SaveFactory.getSavePlayerParam().shutdown();
     }
 }

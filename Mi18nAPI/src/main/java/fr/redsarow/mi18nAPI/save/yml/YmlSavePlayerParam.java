@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
-
 /**
  * @author redsarow
  * @since 1.0.0
@@ -27,7 +25,6 @@ public class YmlSavePlayerParam extends AYmlSave implements ISavePlayerParam {
     private YamlConfiguration configFile;
 
     public YmlSavePlayerParam(Mi18nAPI Mi18nAPI) throws IOException {
-        LOGGER.info("save " + FILE);
 
         this.dataFolder = Mi18nAPI.getDataFolder();
 
@@ -62,5 +59,10 @@ public class YmlSavePlayerParam extends AYmlSave implements ISavePlayerParam {
         String playerUUID = player.getUniqueId().toString();
         setSectionVal(configFile, playerUUID, null);
         return true;
+    }
+
+    @Override
+    public void shutdown() {
+
     }
 }

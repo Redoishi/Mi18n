@@ -15,8 +15,37 @@
 
     <properties>
         <mainClass>fr.redsarow.mi18nAPI.Mi18nAPI</mainClass>
-        <manifest>META-INF/MANIFEST.MF</manifest>
+        <manifest>../META-INF/MANIFEST.MF</manifest>
     </properties>
+
+    <dependencies>
+        <!-- commons DBCP -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <finalName>${artifactId}-${version}-shade</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>

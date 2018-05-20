@@ -32,4 +32,6 @@ public interface ISavePlayerParam {
      * @return true if ok, else false;
      */
     boolean rmLocalForPlayer(Player player);
+
+    void shutdown();
 }

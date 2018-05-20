@@ -5,6 +5,7 @@ import fr.redsarow.mi18nAPI.save.sql.SqlSavePlayerParam;
 import fr.redsarow.mi18nAPI.save.yml.YmlSavePlayerParam;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static fr.redsarow.mi18nAPI.Mi18nAPI.LANGUAGE_BUNDLE;
 import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
@@ -17,7 +18,14 @@ public abstract class SaveFactory {
 
     private static ISavePlayerParam savePlayerParam;
 
-    public static void initSave(Mi18nAPI mi18nAPI, String type) throws IOException {
+    /**
+     * @param mi18nAPI
+     * @param type
+     *
+     * @throws IOException flag by yml
+     * @throws SQLException flag by sql
+     */
+    public static void initSave(Mi18nAPI mi18nAPI, String type) throws IOException, SQLException {
         type = type.toLowerCase();
         switch (type) {
             case "yml":
@@ -29,5 +37,9 @@ public abstract class SaveFactory {
                 savePlayerParam = new SqlSavePlayerParam(mi18nAPI);
                 break;
         }
+    }
+
+    public static ISavePlayerParam getSavePlayerParam() {
+        return savePlayerParam;
     }
 }
