@@ -24,7 +24,7 @@ public class PlayerParamMng {
         this.iSavePlayerParam = iSavePlayerParam;
     }
 
-    public static void initInstance() {
+    static void initInstance() {
         new PlayerParamMng(SaveFactory.getSavePlayerParam());
     }
 
