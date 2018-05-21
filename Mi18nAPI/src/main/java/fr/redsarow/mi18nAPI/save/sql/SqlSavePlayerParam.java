@@ -44,9 +44,9 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
             connection = dataSource.getConnection();
             statement = connection.createStatement();
             statement.execute("CREATE TABLE IF NOT EXISTS " + TAB_NAME +
-                    " (" + UUID + " varchar(50)," +
-                    LANGUAGE + " varchar(50)," +
-                    COUNTRY + " varchar(50)" +
+                    " (" + UUID + " varchar(50), " +
+                    LANGUAGE + " varchar(50), " +
+                    COUNTRY + " varchar(50), " +
                     "CONSTRAINT PK_uuid PRIMARY KEY (" + UUID + ")" +
                     ");");
         } catch (Exception e) {
@@ -80,8 +80,9 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
         PreparedStatement statement = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM " + TAB_NAME +
-                    "WHERE " + UUID + "=?;");
+            String sql = "SELECT * FROM " + TAB_NAME +
+                    " WHERE " + UUID + "=?;";
+            statement = connection.prepareStatement(sql);
             statement.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -108,23 +109,26 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
             connection = dataSource.getConnection();
 
             //check exist
-            statement = connection.prepareStatement("SELECT * FROM " + TAB_NAME +
-                    "WHERE " + UUID + "=?;");
+            String sqlExist = "SELECT * FROM " + TAB_NAME +
+                     " WHERE " + UUID + "=?;";
+            statement = connection.prepareStatement(sqlExist);
             statement.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
                 //insert
-                statementUpdate = connection.prepareStatement("INSERT INTO " + TAB_NAME +
-                        "VALUES (?, ?, ?);");
+                String sqlInsert = "INSERT INTO " + TAB_NAME +
+                        " VALUES (?, ?, ?);";
+                statementUpdate = connection.prepareStatement(sqlInsert);
                 statementUpdate.setString(1, player.getUniqueId().toString());
                 statementUpdate.setString(2, locale.getLanguage());
                 statementUpdate.setString(3, locale.getCountry());
             } else {
                 //update
-                statementUpdate = connection.prepareStatement("UPDATE " + TAB_NAME +
-                        "SET " + LANGUAGE + "=?, " + COUNTRY + "=?" +
-                        "WHERE " + UUID + "=?;");
+                String sqlUpdate = "UPDATE " + TAB_NAME +
+                        " SET " + LANGUAGE + "=?, " + COUNTRY + "=?" +
+                        " WHERE " + UUID + "=?;";
+                statementUpdate = connection.prepareStatement(sqlUpdate);
                 statementUpdate.setString(1, locale.getLanguage());
                 statementUpdate.setString(2, locale.getCountry());
                 statementUpdate.setString(3, player.getUniqueId().toString());
@@ -151,11 +155,12 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
             connection = dataSource.getConnection();
 
             //check exist
-            statement = connection.prepareStatement("DELETE FROM " + TAB_NAME +
-                    "WHERE " + UUID + "=?;");
+            String sql = "DELETE FROM " + TAB_NAME +
+                    " WHERE " + UUID + "=?;";
+            statement = connection.prepareStatement(sql);
             statement.setString(1, player.getUniqueId().toString());
             int i = statement.executeUpdate();
-            ok = i == 1;
+            ok = i <= 1;
         } catch (Exception e) {
             LOGGER.severe(e.getLocalizedMessage());
             e.printStackTrace();
