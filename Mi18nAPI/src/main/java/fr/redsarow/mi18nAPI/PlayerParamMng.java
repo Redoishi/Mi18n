@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
 
+import static fr.redsarow.mi18nAPI.Mi18nAPI.DEFAULT_SERVER_LOCAL;
+
 /**
  * @author redsarow
  * @since 1.0.0
@@ -25,7 +27,7 @@ public class PlayerParamMng {
     }
 
     static void initInstance() {
-        new PlayerParamMng(SaveFactory.getSavePlayerParam());
+        ourInstance = new PlayerParamMng(SaveFactory.getSavePlayerParam());
     }
 
     public static PlayerParamMng getInstance() {
@@ -35,11 +37,12 @@ public class PlayerParamMng {
     public Locale getPlayerLocal(Player player) {
         UUID uniqueId = player.getUniqueId();
         if (playerLocal.containsKey(uniqueId)) {
-            return playerLocal.get(uniqueId);
+            Locale locale = playerLocal.get(uniqueId);
+            return locale==null?DEFAULT_SERVER_LOCAL:locale;
         }
         Locale localForPlayer = iSavePlayerParam.getLocalForPlayer(player);
         playerLocal.put(uniqueId, localForPlayer);
-        return localForPlayer;
+        return localForPlayer==null?DEFAULT_SERVER_LOCAL:localForPlayer;
     }
 
     public boolean setPlayerLocal(Player player, Locale locale){
@@ -53,8 +56,12 @@ public class PlayerParamMng {
     public boolean rmPlayerLocal(Player player){
         boolean ok = iSavePlayerParam.rmLocalForPlayer(player);
         if(ok){
-            playerLocal.remove(player.getUniqueId());
+            playerLocal.put(player.getUniqueId(), null);
         }
         return ok;
+    }
+
+    public boolean rmPlayer(Player player){
+            return playerLocal.remove(player.getUniqueId()) != null;
     }
 }

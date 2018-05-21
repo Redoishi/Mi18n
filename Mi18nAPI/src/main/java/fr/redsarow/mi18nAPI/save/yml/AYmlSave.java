@@ -20,7 +20,7 @@ public abstract class AYmlSave {
                 return false;
             }
             MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.yml.create.folder"));
-            LOGGER.info(MESSAGE_FORMAT.format(dataFolder));
+            LOGGER.info(MESSAGE_FORMAT.format(new String[]{dataFolder.getPath()}));
         }
 
         File file = new File(dataFolder, fileName);
@@ -30,7 +30,7 @@ public abstract class AYmlSave {
                 return false;
             }
             MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.yml.create.file"));
-            LOGGER.info(MESSAGE_FORMAT.format(fileName));
+            LOGGER.info(MESSAGE_FORMAT.format(new String[]{fileName}));
         }
         return true;
     }

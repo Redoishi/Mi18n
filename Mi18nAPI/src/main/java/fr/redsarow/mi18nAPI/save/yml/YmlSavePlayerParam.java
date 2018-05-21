@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
+
 /**
  * @author redsarow
  * @since 1.0.0
@@ -45,20 +47,31 @@ public class YmlSavePlayerParam extends AYmlSave implements ISavePlayerParam {
         return new Locale(languae, country);
     }
 
+    private boolean save() {
+        try {
+            configFile.save(file);
+        } catch (IOException e) {
+            LOGGER.severe(e.getLocalizedMessage());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public boolean saveLocalForPlayer(Player player, Locale locale) {
         String playerUUID = player.getUniqueId().toString();
         setSection(configFile, playerUUID);
         setSectionVal(configFile, playerUUID + "." + LANGUAGE, locale.getLanguage());
         setSectionVal(configFile, playerUUID + "." + COUNTRY, locale.getCountry());
-        return true;
+        return save();
     }
 
     @Override
     public boolean rmLocalForPlayer(Player player) {
         String playerUUID = player.getUniqueId().toString();
         setSectionVal(configFile, playerUUID, null);
-        return true;
+        return save();
     }
 
     @Override

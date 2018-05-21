@@ -1,6 +1,7 @@
 package fr.redsarow.mi18nAPI;
 
 import fr.redsarow.mi18nAPI.config.Config;
+import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
 import fr.redsarow.mi18nAPI.save.SaveFactory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,6 +62,9 @@ public class Mi18nAPI extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        SaveFactory.getSavePlayerParam().shutdown();
+        ISavePlayerParam savePlayerParam = SaveFactory.getSavePlayerParam();
+        if (savePlayerParam != null) {
+            savePlayerParam.shutdown();
+        }
     }
 }
