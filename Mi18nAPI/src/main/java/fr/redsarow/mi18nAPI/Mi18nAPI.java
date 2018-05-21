@@ -1,9 +1,12 @@
 package fr.redsarow.mi18nAPI;
 
 import fr.redsarow.mi18nAPI.config.Config;
+import fr.redsarow.mi18nAPI.listener.Leave;
 import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
 import fr.redsarow.mi18nAPI.save.SaveFactory;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.MessageFormat;
@@ -52,6 +55,11 @@ public class Mi18nAPI extends JavaPlugin {
 
             PlayerParamMng.initInstance();
             I18n.setPlayerParam(PlayerParamMng.getInstance());
+
+            LOGGER.info(LANGUAGE_BUNDLE.getString("init.listener"));
+            PluginManager pm = Bukkit.getPluginManager();
+            pm.registerEvents(new Leave(this), this);
+
 
         } catch (Exception e) {
             LOGGER.severe(e.getLocalizedMessage());
