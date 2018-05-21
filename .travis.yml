@@ -20,9 +20,9 @@ addons:
       secure: $token
 
 script:
-  - mvn -f ./back-end/pom.xml test
-  - mvn -f ./back-end/pom.xml org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
-  - mvn -f ./back-end/pom.xml -P codecov cobertura:cobertura
+  - mvn test
+  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn -P codecov cobertura:cobertura
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
