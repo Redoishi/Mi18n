@@ -20,11 +20,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <author>redsarow</author>
         <manifest>META-INF/MANIFEST.MF</manifest>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.organization>redsarow-github</sonar.organization>
     </properties>
 
     <licenses>
         <license>
             <name>MIT</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
 
@@ -34,6 +37,17 @@
             <url>https://github.com/redsarow</url>
         </developer>
     </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/redsarow/Mi18n/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/redsarow/Mi18n.git</connection>
+        <developerConnection>scm:git:ssh://github.com/redsarow/Mi18n.git</developerConnection>
+        <url>http://github.com/redsarow/Mi18n/tree/master</url>
+    </scm>
 
     <repositories>
         <!--spigot-->
@@ -91,7 +105,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <finalName>${name}-${version}</finalName>
+                    <finalName>${project.name}-${project.version}</finalName>
                     <archive>
                         <manifestFile>${manifest}</manifestFile>
                         <manifest>
@@ -104,4 +118,56 @@
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>javadoc</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <detectOfflineLinks>true</detectOfflineLinks>
+                            <detectLinks>true</detectLinks>
+                            <show>private</show>
+                            <links>
+                            </links>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>javadoc</goal>
+                                    <goal>test-javadoc</goal>
+                                </goals>
+                                <phase>compile</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>codecov</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>cobertura-maven-plugin</artifactId>
+                        <version>2.7</version>
+                        <configuration>
+                            <formats>
+                                <format>html</format>
+                                <format>xml</format>
+                            </formats>
+                            <aggregate>true</aggregate>
+                            <check/>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
