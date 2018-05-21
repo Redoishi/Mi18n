@@ -40,8 +40,9 @@ public class Language extends AMyCommand {
         if(args.length<=0){
             boolean b = playerParamMng.rmPlayerLocal(player);//
             if(b){
+                Locale playerLocal = playerParamMng.getPlayerLocal(player);
                 player.sendMessage(i18n.get(player, "cmd.language.setLang",
-                        ChatColor.DARK_AQUA+playerParamMng.getPlayerLocal(player).getLanguage()));
+                        ChatColor.DARK_AQUA+playerLocal.getLanguage()+"-"+playerLocal.getCountry()));
             }else{
                 player.sendMessage(ChatColor.RED+i18n.get(player, "cmd.language.error.setLang"));
             }
@@ -54,8 +55,9 @@ public class Language extends AMyCommand {
             Locale locale = new Locale(language, country);
             boolean b = playerParamMng.setPlayerLocal(player, locale);//
             if(b){
+                Locale playerLocal = playerParamMng.getPlayerLocal(player);
                 player.sendMessage(i18n.get(player, "cmd.language.setLang",
-                        ChatColor.DARK_AQUA+playerParamMng.getPlayerLocal(player).getLanguage()));
+                        ChatColor.DARK_AQUA+playerLocal.getLanguage()+"-"+playerLocal.getCountry()));
             }else{
                 player.sendMessage(ChatColor.RED+i18n.get(player, "cmd.language.error.setLang"));
             }
