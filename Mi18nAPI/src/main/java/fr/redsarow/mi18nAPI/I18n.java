@@ -19,13 +19,15 @@ import static fr.redsarow.mi18nAPI.Mi18nAPI.*;
 public class I18n {
 
     private static PlayerParamMng PLAYER_PARAM_MNG;
-    static void setPlayerParam(PlayerParamMng playerParam){
+
+    static void setPlayerParam(PlayerParamMng playerParam) {
         PLAYER_PARAM_MNG = playerParam;
     }
 
     private final HashMap<Locale, ResourceBundle> bundleHashMap;
     private final Locale defaultLocale;
     private final List<Locale> locales;
+    private final List<Locale> allLocales;
     private String baseName;
 
     private final URLClassLoader classLoader;
@@ -38,6 +40,9 @@ public class I18n {
         this.locales = Arrays.stream(locales).collect(Collectors.toList());
         this.bundleHashMap = new HashMap<>();
         this.baseName = baseName;
+        this.allLocales = new ArrayList<>();
+        this.allLocales.add(defaultLocale);
+        this.allLocales.addAll(this.locales);
 
         File file = new File(clientClass.getProtectionDomain().getCodeSource().getLocation().toURI());
 
@@ -56,11 +61,17 @@ public class I18n {
             locale = defaultLocale;
         }
 
-        if (!defaultLocale.equals(locale) && !this.locales.contains(locale)) {
-            if (this.locales.contains(DEFAULT_SERVER_LOCAL)) {
-                locale = DEFAULT_SERVER_LOCAL;
-            } else {
-                locale = defaultLocale;
+        if (!allLocales.contains(locale)) {
+            locale = Locale.lookup(
+                    Locale.LanguageRange.parse(locale.toLanguageTag()),
+                    allLocales
+            );
+            if(locale == null){
+                if (allLocales.contains(DEFAULT_SERVER_LOCAL)) {
+                    locale = DEFAULT_SERVER_LOCAL;
+                } else {
+                    locale = defaultLocale;
+                }
             }
         }
         ResourceBundle resourceBundle = bundleHashMap.get(locale);
@@ -89,7 +100,7 @@ public class I18n {
         return resourceBundle.getString(key);
     }
 
-    public String get(Player player, String key, Object ... param) {
+    public String get(Player player, String key, Object... param) {
         ResourceBundle resourceBundle = getResourceBundle(PLAYER_PARAM_MNG.getPlayerLocal(player));
         MESSAGE_FORMAT.applyPattern(resourceBundle.getString(key));
         return MESSAGE_FORMAT.format(param);
