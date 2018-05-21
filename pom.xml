@@ -122,6 +122,9 @@
     <profiles>
         <profile>
             <id>javadoc</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
