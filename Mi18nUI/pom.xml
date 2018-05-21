@@ -15,7 +15,15 @@
 
     <properties>
         <mainClass>fr.redsarow.mi18nUI.Mi18nUI</mainClass>
+        <manifest>../META-INF/MANIFEST.MF</manifest>
     </properties>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>fr.redsarow</groupId>
+            <artifactId>Mi18nAPI</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project>
