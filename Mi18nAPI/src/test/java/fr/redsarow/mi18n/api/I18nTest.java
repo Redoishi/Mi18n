@@ -20,10 +20,10 @@ public class I18nTest {
 
     @Before
     public void setUp() throws Exception {
-        Mi18nAPI.getLOGGER() = Logger.getLogger(I18nTest.class.getName());
+        Mi18nAPI.setLOGGER(Logger.getLogger(I18nTest.class.getName()));
         Mi18nAPI.DEFAULT_SERVER_LOCAL = Locale.ENGLISH;
-        Mi18nAPI.getLanguageBundle() = ResourceBundle.getBundle("Mi18nAPI_language", Mi18nAPI.DEFAULT_SERVER_LOCAL);
-        Mi18nAPI.getMessageFormat() = new MessageFormat("");
+        Mi18nAPI.setLanguageBundle(ResourceBundle.getBundle("Mi18nAPI_language", Mi18nAPI.DEFAULT_SERVER_LOCAL));
+        Mi18nAPI.setMessageFormat(new MessageFormat(""));
         Mi18nAPI.getMessageFormat().setLocale(Mi18nAPI.DEFAULT_SERVER_LOCAL);
     }
 
@@ -38,9 +38,9 @@ public class I18nTest {
 
         assertEquals("", baseName, i18n.getBaseName());
 
-        assertEquals("get Default Locale", defaultLocal,  i18n.getDefaultLocale());
+        assertEquals("get Default Locale", defaultLocal, i18n.getDefaultLocale());
 
-        assertEquals("get Locals", localeList,  i18n.getLocales());
+        assertEquals("get Locals", localeList, i18n.getLocales());
     }
 
     //<editor-fold desc="test get">

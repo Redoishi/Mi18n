@@ -88,4 +88,16 @@ public class Mi18nAPI extends JavaPlugin {
     public static MessageFormat getMessageFormat() {
         return MESSAGE_FORMAT;
     }
+
+    static void setLOGGER(Logger LOGGER) {
+        Mi18nAPI.LOGGER = LOGGER;
+    }
+
+    static void setLanguageBundle(ResourceBundle languageBundle) {
+        LANGUAGE_BUNDLE = languageBundle;
+    }
+
+    static void setMessageFormat(MessageFormat messageFormat) {
+        MESSAGE_FORMAT = messageFormat;
+    }
 }
