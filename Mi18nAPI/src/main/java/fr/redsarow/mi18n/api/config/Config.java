@@ -25,7 +25,7 @@ public class Config {
     private static FileConfiguration fileConfiguration;
     private static Map<String, FileConfiguration> listeFileConfiguration = new HashMap<>();
 
-    private final static String version = "version";
+    private static final String VERSION = "version";
 
     private Config() {
         throw new IllegalStateException("Utility class");
@@ -74,12 +74,12 @@ public class Config {
             //rename config.yml
             fileConfiguration = plugin.getConfig();
 
-            if (fileConfiguration.getDouble(version) != Mi18nAPI.VERS_CONFIG) {
+            if (fileConfiguration.getDouble(VERSION) != Mi18nAPI.VERS_CONFIG) {
 
                 Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("init.config.deprecated"));
                 Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{name}));
 
-                File aConfig = new File(plugin.getDataFolder() + File.separator + name.replace(".yml", "") + fileConfiguration.get(version) + ".yml");
+                File aConfig = new File(plugin.getDataFolder() + File.separator + name.replace(".yml", "") + fileConfiguration.get(VERSION) + ".yml");
 
                 if (!configFile.renameTo(aConfig)) {
                     return false;
@@ -126,7 +126,7 @@ public class Config {
                     param.lines.add(param.nbLinge, ligne);
                 }
 
-            } else if (!(ligne.startsWith("#") || ligne.startsWith(version) || ligne.matches("^ *$"))) {
+            } else if (!(ligne.startsWith("#") || ligne.startsWith(VERSION) || ligne.matches("^ *$"))) {
 
                 String[] aConfigValue = ligne.split(": |:");
                 aConfigValue[0] = aConfigValue[0].replaceAll("^ *", "");

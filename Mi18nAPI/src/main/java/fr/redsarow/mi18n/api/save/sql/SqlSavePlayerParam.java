@@ -22,11 +22,8 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
     private static final String COUNTRY = "country";
 
     private BasicDataSource dataSource;
-    private Mi18nAPI mi18nAPI;
 
     public SqlSavePlayerParam(Mi18nAPI mi18nAPI) throws SQLException {
-        this.mi18nAPI = mi18nAPI;
-
         FileConfiguration config = mi18nAPI.getConfig();
         dataSource = new BasicDataSource();
         dataSource.setUrl(config.getString("sql.url"));
