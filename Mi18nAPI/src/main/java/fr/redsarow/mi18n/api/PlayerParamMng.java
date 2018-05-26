@@ -32,34 +32,43 @@ public class PlayerParamMng {
         return ourInstance;
     }
 
+    /**
+     * utils for test
+     *
+     * @param iSavePlayerParam
+     */
+    protected void setiSavePlayerParam(ISavePlayerParam iSavePlayerParam) {
+        this.iSavePlayerParam = iSavePlayerParam;
+    }
+
     public Locale getPlayerLocal(Player player) {
         UUID uniqueId = player.getUniqueId();
         if (playerLocal.containsKey(uniqueId)) {
             Locale locale = playerLocal.get(uniqueId);
-            return locale==null? Mi18nAPI.DEFAULT_SERVER_LOCAL:locale;
+            return locale == null ? Mi18nAPI.DEFAULT_SERVER_LOCAL : locale;
         }
         Locale localForPlayer = iSavePlayerParam.getLocalForPlayer(player);
         playerLocal.put(uniqueId, localForPlayer);
-        return localForPlayer==null? Mi18nAPI.DEFAULT_SERVER_LOCAL:localForPlayer;
+        return localForPlayer == null ? Mi18nAPI.DEFAULT_SERVER_LOCAL : localForPlayer;
     }
 
-    public boolean setPlayerLocal(Player player, Locale locale){
+    public boolean setPlayerLocal(Player player, Locale locale) {
         boolean ok = iSavePlayerParam.saveLocalForPlayer(player, locale);
-        if(ok){
+        if (ok) {
             playerLocal.put(player.getUniqueId(), locale);
         }
         return ok;
     }
 
-    public boolean rmPlayerLocal(Player player){
+    public boolean rmPlayerLocal(Player player) {
         boolean ok = iSavePlayerParam.rmLocalForPlayer(player);
-        if(ok){
+        if (ok) {
             playerLocal.put(player.getUniqueId(), null);
         }
         return ok;
     }
 
-    public boolean rmPlayer(Player player){
-            return playerLocal.remove(player.getUniqueId()) != null;
+    public boolean rmPlayer(Player player) {
+        return playerLocal.remove(player.getUniqueId()) != null;
     }
 }
