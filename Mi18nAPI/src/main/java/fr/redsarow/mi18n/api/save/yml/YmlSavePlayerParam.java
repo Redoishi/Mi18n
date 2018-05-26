@@ -1,15 +1,14 @@
-package fr.redsarow.mi18nAPI.save.yml;
+package fr.redsarow.mi18n.api.save.yml;
 
-import fr.redsarow.mi18nAPI.Mi18nAPI;
-import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
+import fr.redsarow.mi18n.api.Mi18nAPI;
+import fr.redsarow.mi18n.api.save.ISavePlayerParam;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-
-import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
+import java.util.logging.Level;
 
 /**
  * @author redsarow
@@ -17,22 +16,22 @@ import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
  */
 public class YmlSavePlayerParam extends AYmlSave implements ISavePlayerParam {
 
-    private final static String FILE = "PlayerParam.yml";
+    private static final String FILE_NAME = "PlayerParam.yml";
 
-    private final static String LANGUAGE = "language";
-    private final static String COUNTRY = "country";
+    private static final String LANGUAGE = "language";
+    private static final String COUNTRY = "country";
 
     private File dataFolder;
     private File file;
     private YamlConfiguration configFile;
 
-    public YmlSavePlayerParam(Mi18nAPI Mi18nAPI) throws IOException {
+    public YmlSavePlayerParam(Mi18nAPI mi18nAPI) throws IOException {
 
-        this.dataFolder = Mi18nAPI.getDataFolder();
+        this.dataFolder = mi18nAPI.getDataFolder();
 
-        initFile(dataFolder, FILE);
+        initFile(dataFolder, FILE_NAME);
 
-        file = new File(this.dataFolder, FILE);
+        file = new File(this.dataFolder, FILE_NAME);
         configFile = YamlConfiguration.loadConfiguration(file);
     }
 
@@ -51,8 +50,7 @@ public class YmlSavePlayerParam extends AYmlSave implements ISavePlayerParam {
         try {
             configFile.save(file);
         } catch (IOException e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
             return false;
         }
         return true;

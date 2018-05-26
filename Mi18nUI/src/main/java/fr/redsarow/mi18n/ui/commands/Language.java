@@ -1,6 +1,6 @@
-package fr.redsarow.mi18nUI.commands;
+package fr.redsarow.mi18n.ui.commands;
 
-import fr.redsarow.mi18nUI.Mi18nUI;
+import fr.redsarow.mi18n.ui.Mi18nUI;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -8,9 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
-
-import static fr.redsarow.mi18nUI.Mi18nUI.i18n;
-import static fr.redsarow.mi18nUI.Mi18nUI.playerParamMng;
 
 /**
  * @author redsarow
@@ -33,18 +30,18 @@ public class Language extends AMyCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + i18n.get("cmd.language.error.noPlayer"));
+            sender.sendMessage(ChatColor.RED + Mi18nUI.getI18n().get("cmd.language.error.noPlayer"));
             return true;
         }
         Player player = (Player) sender;
         if(args.length<=0){
-            boolean b = playerParamMng.rmPlayerLocal(player);//
+            boolean b = Mi18nUI.getPlayerParamMng().rmPlayerLocal(player);//
             if(b){
-                Locale playerLocal = playerParamMng.getPlayerLocal(player);
-                player.sendMessage(i18n.get(player, "cmd.language.setLang",
+                Locale playerLocal = Mi18nUI.getPlayerParamMng().getPlayerLocal(player);
+                player.sendMessage(Mi18nUI.getI18n().get(player, "cmd.language.setLang",
                         ChatColor.DARK_AQUA+playerLocal.getLanguage()+"-"+playerLocal.getCountry()));
             }else{
-                player.sendMessage(ChatColor.RED+i18n.get(player, "cmd.language.error.setLang"));
+                player.sendMessage(ChatColor.RED+ Mi18nUI.getI18n().get(player, "cmd.language.error.setLang"));
             }
         }else{
             String language=args[0].toLowerCase();
@@ -53,13 +50,13 @@ public class Language extends AMyCommand {
                 country = args[1].toUpperCase();
             }
             Locale locale = new Locale(language, country);
-            boolean b = playerParamMng.setPlayerLocal(player, locale);//
+            boolean b = Mi18nUI.getPlayerParamMng().setPlayerLocal(player, locale);//
             if(b){
-                Locale playerLocal = playerParamMng.getPlayerLocal(player);
-                player.sendMessage(i18n.get(player, "cmd.language.setLang",
+                Locale playerLocal = Mi18nUI.getPlayerParamMng().getPlayerLocal(player);
+                player.sendMessage(Mi18nUI.getI18n().get(player, "cmd.language.setLang",
                         ChatColor.DARK_AQUA+playerLocal.getLanguage()+"-"+playerLocal.getCountry()));
             }else{
-                player.sendMessage(ChatColor.RED+i18n.get(player, "cmd.language.error.setLang"));
+                player.sendMessage(ChatColor.RED+ Mi18nUI.getI18n().get(player, "cmd.language.error.setLang"));
             }
         }
         return true;

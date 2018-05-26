@@ -1,14 +1,15 @@
-package fr.redsarow.mi18nUI;
+package fr.redsarow.mi18n.ui;
 
-import fr.redsarow.mi18nAPI.I18n;
-import fr.redsarow.mi18nAPI.PlayerParamMng;
-import fr.redsarow.mi18nUI.commands.Language;
+import fr.redsarow.mi18n.api.I18n;
+import fr.redsarow.mi18n.api.PlayerParamMng;
+import fr.redsarow.mi18n.ui.commands.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
+import java.util.logging.Level;
 
 /**
  * @author redsarow
@@ -16,8 +17,8 @@ import java.util.Locale;
  */
 public class Mi18nUI extends JavaPlugin {
 
-    public static I18n i18n;
-    public static PlayerParamMng playerParamMng;
+    private static I18n i18n;
+    private static PlayerParamMng playerParamMng;
 
     @Override
     public void onEnable() {
@@ -34,8 +35,7 @@ public class Mi18nUI extends JavaPlugin {
             new Language(this, commandMap);
 
         } catch (Exception e) {
-            getLogger().severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, e.getLocalizedMessage(), e);
             this.getPluginLoader().disablePlugin(this);
         }
     }
@@ -43,5 +43,13 @@ public class Mi18nUI extends JavaPlugin {
     @Override
     public void onDisable() {
 
+    }
+
+    public static I18n getI18n() {
+        return i18n;
+    }
+
+    public static PlayerParamMng getPlayerParamMng() {
+        return playerParamMng;
     }
 }

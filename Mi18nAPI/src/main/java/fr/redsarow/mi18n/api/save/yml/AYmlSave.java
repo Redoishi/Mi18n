@@ -1,11 +1,10 @@
-package fr.redsarow.mi18nAPI.save.yml;
+package fr.redsarow.mi18n.api.save.yml;
 
+import fr.redsarow.mi18n.api.Mi18nAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-
-import static fr.redsarow.mi18nAPI.Mi18nAPI.*;
 
 /**
  * @author redsarow
@@ -19,8 +18,8 @@ public abstract class AYmlSave {
             if (!mkdirs) {
                 return false;
             }
-            MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.yml.create.folder"));
-            LOGGER.info(MESSAGE_FORMAT.format(new String[]{dataFolder.getPath()}));
+            Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("init.save.yml.create.folder"));
+            Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{dataFolder.getPath()}));
         }
 
         File file = new File(dataFolder, fileName);
@@ -29,8 +28,8 @@ public abstract class AYmlSave {
             if (!newFile) {
                 return false;
             }
-            MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("init.save.yml.create.file"));
-            LOGGER.info(MESSAGE_FORMAT.format(new String[]{fileName}));
+            Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("init.save.yml.create.file"));
+            Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{fileName}));
         }
         return true;
     }

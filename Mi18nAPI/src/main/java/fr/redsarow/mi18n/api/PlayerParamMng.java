@@ -1,14 +1,12 @@
-package fr.redsarow.mi18nAPI;
+package fr.redsarow.mi18n.api;
 
-import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
-import fr.redsarow.mi18nAPI.save.SaveFactory;
+import fr.redsarow.mi18n.api.save.ISavePlayerParam;
+import fr.redsarow.mi18n.api.save.SaveFactory;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
-
-import static fr.redsarow.mi18nAPI.Mi18nAPI.DEFAULT_SERVER_LOCAL;
 
 /**
  * @author redsarow
@@ -38,11 +36,11 @@ public class PlayerParamMng {
         UUID uniqueId = player.getUniqueId();
         if (playerLocal.containsKey(uniqueId)) {
             Locale locale = playerLocal.get(uniqueId);
-            return locale==null?DEFAULT_SERVER_LOCAL:locale;
+            return locale==null? Mi18nAPI.DEFAULT_SERVER_LOCAL:locale;
         }
         Locale localForPlayer = iSavePlayerParam.getLocalForPlayer(player);
         playerLocal.put(uniqueId, localForPlayer);
-        return localForPlayer==null?DEFAULT_SERVER_LOCAL:localForPlayer;
+        return localForPlayer==null? Mi18nAPI.DEFAULT_SERVER_LOCAL:localForPlayer;
     }
 
     public boolean setPlayerLocal(Player player, Locale locale){

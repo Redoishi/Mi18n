@@ -1,4 +1,4 @@
-package fr.redsarow.mi18nAPI.save;
+package fr.redsarow.mi18n.api.save;
 
 import org.bukkit.entity.Player;
 

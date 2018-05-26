@@ -1,15 +1,14 @@
-package fr.redsarow.mi18nAPI.save.sql;
+package fr.redsarow.mi18n.api.save.sql;
 
-import fr.redsarow.mi18nAPI.Mi18nAPI;
-import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
+import fr.redsarow.mi18n.api.Mi18nAPI;
+import fr.redsarow.mi18n.api.save.ISavePlayerParam;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
 import java.util.Locale;
-
-import static fr.redsarow.mi18nAPI.Mi18nAPI.LOGGER;
+import java.util.logging.Level;
 
 /**
  * @author redsarow
@@ -50,8 +49,7 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
                     "CONSTRAINT PK_uuid PRIMARY KEY (" + UUID + ")" +
                     ");");
         } catch (Exception e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
         } finally {
             close(connection, statement);
         }
@@ -68,8 +66,7 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
                 connection.close();
             }
         } catch (SQLException e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
     }
 
@@ -91,8 +88,7 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
                 locale = new Locale(language, country);
             }
         } catch (Exception e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
         } finally {
             close(connection, statement);
         }
@@ -137,8 +133,7 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
             ok = i == 1;
 
         } catch (Exception e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
             ok = false;
         } finally {
             close(connection, statement, statementUpdate);
@@ -162,8 +157,7 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
             int i = statement.executeUpdate();
             ok = i <= 1;
         } catch (Exception e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
             ok = false;
         } finally {
             close(connection, statement);
@@ -177,8 +171,7 @@ public class SqlSavePlayerParam implements ISavePlayerParam {
             try {
                 dataSource.close();
             } catch (SQLException e) {
-                LOGGER.severe(e.getLocalizedMessage());
-                e.printStackTrace();
+                Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
             }
         }
     }

@@ -1,5 +1,7 @@
-package fr.redsarow.mi18nAPI.config;
+package fr.redsarow.mi18n.api.config;
 
+import fr.redsarow.mi18n.api.Mi18nAPI;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -8,8 +10,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.logging.Level;
 
-import static fr.redsarow.mi18nAPI.Mi18nAPI.VERS_CONFIG;
+import static fr.redsarow.mi18n.api.Mi18nAPI.getLOGGER;
 
 /**
  * @author redsarow
@@ -17,14 +20,18 @@ import static fr.redsarow.mi18nAPI.Mi18nAPI.VERS_CONFIG;
  */
 public class Config {
 
-    private static File config;
+    private static File configFile;
     private static JavaPlugin plugin;
     private static FileConfiguration fileConfiguration;
-
     private static Map<String, FileConfiguration> listeFileConfiguration = new HashMap<>();
 
+    private final static String version = "version";
 
-    public static boolean checkConfig(JavaPlugin plugin, String name, String path) throws Exception {
+    private Config() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static boolean checkConfig(JavaPlugin plugin, String name, String path) throws InvalidConfigurationException, ConfigExeption, IOException {
         Config.plugin = plugin;
         return dataFolderExists() && configFileExists(name, path);
     }
@@ -36,24 +43,26 @@ public class Config {
         return true;
     }
 
-    private static boolean configFileExists(String name, String path) throws Exception {
-        config = new File(path.equals("")
-                ?plugin.getDataFolder().toString()
-                :plugin.getDataFolder()+File.separator+path, name);
-        if (!config.exists()) {
-            plugin.getLogger().info(name+" not found");
-            plugin.saveResource(path.equals("")?name:path+File.separator+name, true);
+    private static boolean configFileExists(String name, String path) throws IOException, InvalidConfigurationException, ConfigExeption {
+        configFile = new File(path.equals("")
+                ? plugin.getDataFolder().toString()
+                : plugin.getDataFolder() + File.separator + path, name);
+        if (!configFile.exists()) {
+            Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("init.config.path.notFound"));
+            Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{name}));
+            plugin.saveResource(path.equals("") ? name : path + File.separator + name, true);
         } else {
-            plugin.getLogger().info(name +" found");
+            Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("init.config.path.found"));
+            Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{name}));
             if (!checkConfigVers(name)) {
-                throw new Exception();
+                throw new ConfigExeption();
             }
         }
 
-        if(fileConfiguration == null){
+        if (fileConfiguration == null) {
             fileConfiguration = plugin.getConfig();
         }
-        fileConfiguration.load(config);
+        fileConfiguration.load(configFile);
         listeFileConfiguration.put(name.replace(".yml", ""), fileConfiguration);
         return true;
     }
@@ -64,17 +73,15 @@ public class Config {
         try {
             //rename config.yml
             fileConfiguration = plugin.getConfig();
-            if(fileConfiguration.getDouble("version") != VERS_CONFIG){
 
-                plugin.getLogger().info(name+" deprecated");
+            if (fileConfiguration.getDouble(version) != Mi18nAPI.VERS_CONFIG) {
 
-                //get values ancient config
-//                Map<String, Object> values = fileConfiguration.getValues(true);
+                Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("init.config.deprecated"));
+                Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{name}));
 
-                //File config = new File(this.plugin.getDataFolder()+File.separator+name);
-                File aConfig = new File(plugin.getDataFolder()+File.separator+name.replace(".yml", "")+fileConfiguration.get("version")+".yml");
+                File aConfig = new File(plugin.getDataFolder() + File.separator + name.replace(".yml", "") + fileConfiguration.get(version) + ".yml");
 
-                if(!config.renameTo(aConfig)){
+                if (!configFile.renameTo(aConfig)) {
                     return false;
                 }
                 plugin.saveDefaultConfig();
@@ -84,42 +91,42 @@ public class Config {
                 fileConfiguration = plugin.getConfig();
 
 
-                List<String> lines = Files.readAllLines(config.toPath(), StandardCharsets.UTF_8);
+                List<String> lines = Files.readAllLines(configFile.toPath(), StandardCharsets.UTF_8);
 
                 Param param = new Param(new Scanner(aConfig), -1, lines);
                 StringBuilder stringBuilder = new StringBuilder("");
 
                 modif(param, null, stringBuilder);
 
-                Files.write(config.toPath(), param.lines, StandardCharsets.UTF_8);
+                Files.write(configFile.toPath(), param.lines, StandardCharsets.UTF_8);
 
             }
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
 
-    private static void modif(Param param, Set<String> keys, StringBuilder path){
+    private static void modif(Param param, Set<String> keys, StringBuilder path) {
 
-        if(param.scanner.hasNextLine()) {
+        if (param.scanner.hasNextLine()) {
             //skip comment, version and void (ancient)
             String ligne = param.scanner.nextLine();
 
             param.nbLinge++;
 
             //if list
-            if(ligne.matches("^ *-.*")){
-                if(param.nbLinge<param.lines.size() && param.lines.get(param.nbLinge).matches("^ *-.*")){
+            if (ligne.matches("^ *-.*")) {
+                if (param.nbLinge < param.lines.size() && param.lines.get(param.nbLinge).matches("^ *-.*")) {
                     param.lines.remove(param.nbLinge);
                     param.lines.add(param.nbLinge, ligne);
-                }else{
+                } else {
                     //decal auto
                     param.lines.add(param.nbLinge, ligne);
                 }
 
-            }else if (!(ligne.startsWith("#") || ligne.startsWith("version") || ligne.matches("^ *$"))) {
+            } else if (!(ligne.startsWith("#") || ligne.startsWith(version) || ligne.matches("^ *$"))) {
 
                 String[] aConfigValue = ligne.split(": |:");
                 aConfigValue[0] = aConfigValue[0].replaceAll("^ *", "");
@@ -133,12 +140,12 @@ public class Config {
                         }
                     } else {
                         //si val dif alor replace
-                        if (!aConfigValue[1].equalsIgnoreCase(fileConfiguration.getString(path+"."+aConfigValue[0]))) {
+                        if (!aConfigValue[1].equalsIgnoreCase(fileConfiguration.getString(path + "." + aConfigValue[0]))) {
                             param.lines.remove(param.nbLinge);
                             param.lines.add(param.nbLinge, ligne);
                         }
                         keys.remove(aConfigValue[0]);
-                        if(keys.isEmpty()){
+                        if (keys.isEmpty()) {
                             return;
                         }
                     }
@@ -162,11 +169,10 @@ public class Config {
             }
             modif(param, keys, path);
         }
-        return;
     }
 
-    public static File getConfig() {
-        return config;
+    public static File getConfigFile() {
+        return configFile;
     }
 
     public static FileConfiguration getFileConfiguration() {
@@ -177,7 +183,7 @@ public class Config {
         return listeFileConfiguration;
     }
 
-    private static class Param{
+    private static class Param {
         Scanner scanner;
         int nbLinge;
         List<String> lines;

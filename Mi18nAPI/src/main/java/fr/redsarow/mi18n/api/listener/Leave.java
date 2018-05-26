@@ -1,7 +1,7 @@
-package fr.redsarow.mi18nAPI.listener;
+package fr.redsarow.mi18n.api.listener;
 
-import fr.redsarow.mi18nAPI.Mi18nAPI;
-import fr.redsarow.mi18nAPI.PlayerParamMng;
+import fr.redsarow.mi18n.api.Mi18nAPI;
+import fr.redsarow.mi18n.api.PlayerParamMng;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;

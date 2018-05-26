@@ -1,4 +1,4 @@
-package fr.redsarow.mi18nAPI;
+package fr.redsarow.mi18n.api;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import static fr.redsarow.mi18nAPI.Mi18nAPI.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -21,11 +20,11 @@ public class I18nTest {
 
     @Before
     public void setUp() throws Exception {
-        LOGGER = Logger.getLogger(I18nTest.class.getName());
-        DEFAULT_SERVER_LOCAL = Locale.ENGLISH;
-        LANGUAGE_BUNDLE = ResourceBundle.getBundle("Mi18nAPI_language", DEFAULT_SERVER_LOCAL);
-        MESSAGE_FORMAT = new MessageFormat("");
-        MESSAGE_FORMAT.setLocale(DEFAULT_SERVER_LOCAL);
+        Mi18nAPI.getLOGGER() = Logger.getLogger(I18nTest.class.getName());
+        Mi18nAPI.DEFAULT_SERVER_LOCAL = Locale.ENGLISH;
+        Mi18nAPI.getLanguageBundle() = ResourceBundle.getBundle("Mi18nAPI_language", Mi18nAPI.DEFAULT_SERVER_LOCAL);
+        Mi18nAPI.getMessageFormat() = new MessageFormat("");
+        Mi18nAPI.getMessageFormat().setLocale(Mi18nAPI.DEFAULT_SERVER_LOCAL);
     }
 
     @Test

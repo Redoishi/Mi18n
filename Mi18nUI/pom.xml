@@ -14,7 +14,7 @@
     <description>Mi18nUI</description>
 
     <properties>
-        <mainClass>fr.redsarow.mi18nUI.Mi18nUI</mainClass>
+        <mainClass>fr.redsarow.mi18n.ui.Mi18nUI</mainClass>
         <manifest>../META-INF/MANIFEST.MF</manifest>
     </properties>
 

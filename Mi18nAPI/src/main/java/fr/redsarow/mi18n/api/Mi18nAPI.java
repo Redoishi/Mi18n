@@ -1,9 +1,9 @@
-package fr.redsarow.mi18nAPI;
+package fr.redsarow.mi18n.api;
 
-import fr.redsarow.mi18nAPI.config.Config;
-import fr.redsarow.mi18nAPI.listener.Leave;
-import fr.redsarow.mi18nAPI.save.ISavePlayerParam;
-import fr.redsarow.mi18nAPI.save.SaveFactory;
+import fr.redsarow.mi18n.api.config.Config;
+import fr.redsarow.mi18n.api.listener.Leave;
+import fr.redsarow.mi18n.api.save.ISavePlayerParam;
+import fr.redsarow.mi18n.api.save.SaveFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -20,12 +21,13 @@ import java.util.logging.Logger;
  */
 public class Mi18nAPI extends JavaPlugin {
 
-    public final static double VERS_CONFIG = 1.0;
+    public static final double VERS_CONFIG = 1.0;
 
-    public static Logger LOGGER;
-    public static Locale DEFAULT_SERVER_LOCAL = Locale.ENGLISH;
-    public static ResourceBundle LANGUAGE_BUNDLE;
-    public static MessageFormat MESSAGE_FORMAT;
+    private static Logger LOGGER;
+    private static ResourceBundle LANGUAGE_BUNDLE;
+    private static MessageFormat MESSAGE_FORMAT;
+
+    static Locale DEFAULT_SERVER_LOCAL = Locale.ENGLISH;
 
     @Override
     public void onEnable() {
@@ -62,8 +64,7 @@ public class Mi18nAPI extends JavaPlugin {
 
 
         } catch (Exception e) {
-            LOGGER.severe(e.getLocalizedMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             this.getPluginLoader().disablePlugin(this);
         }
     }
@@ -74,5 +75,17 @@ public class Mi18nAPI extends JavaPlugin {
         if (savePlayerParam != null) {
             savePlayerParam.shutdown();
         }
+    }
+
+    public static Logger getLOGGER() {
+        return LOGGER;
+    }
+
+    public static ResourceBundle getLanguageBundle() {
+        return LANGUAGE_BUNDLE;
+    }
+
+    public static MessageFormat getMessageFormat() {
+        return MESSAGE_FORMAT;
     }
 }

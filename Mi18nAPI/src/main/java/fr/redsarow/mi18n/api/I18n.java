@@ -1,4 +1,4 @@
-package fr.redsarow.mi18nAPI;
+package fr.redsarow.mi18n.api;
 
 import org.bukkit.entity.Player;
 
@@ -8,9 +8,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
-
-import static fr.redsarow.mi18nAPI.Mi18nAPI.*;
 
 /**
  * @author redsarow
@@ -33,8 +32,8 @@ public class I18n {
     private final URLClassLoader classLoader;
 
     public I18n(Class clientClass, String baseName, Locale defaultLocale, Locale... locales) throws URISyntaxException {
-        MESSAGE_FORMAT.applyPattern(LANGUAGE_BUNDLE.getString("I18n.init"));
-        LOGGER.info(MESSAGE_FORMAT.format(new String[]{clientClass.getName(), baseName}));
+        Mi18nAPI.getMessageFormat().applyPattern(Mi18nAPI.getLanguageBundle().getString("I18n.init"));
+        Mi18nAPI.getLOGGER().info(Mi18nAPI.getMessageFormat().format(new String[]{clientClass.getName(), baseName}));
 
         this.defaultLocale = defaultLocale;
         this.locales = Arrays.stream(locales).collect(Collectors.toList());
@@ -50,7 +49,7 @@ public class I18n {
         try {
             urls = new URL[]{file.toURI().toURL()};
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Mi18nAPI.getLOGGER().log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
         classLoader = new URLClassLoader(urls, null);
@@ -67,20 +66,16 @@ public class I18n {
                     allLocales
             );
             if(locale == null){
-                if (allLocales.contains(DEFAULT_SERVER_LOCAL)) {
-                    locale = DEFAULT_SERVER_LOCAL;
+                if (allLocales.contains(Mi18nAPI.DEFAULT_SERVER_LOCAL)) {
+                    locale = Mi18nAPI.DEFAULT_SERVER_LOCAL;
                 } else {
                     locale = defaultLocale;
                 }
             }
         }
-        ResourceBundle resourceBundle = bundleHashMap.get(locale);
-        if (resourceBundle == null) {
-            resourceBundle = ResourceBundle.getBundle(this.baseName, locale, classLoader);
-            bundleHashMap.put(locale, resourceBundle);
-        }
 
-        return resourceBundle;
+        return bundleHashMap.computeIfAbsent(locale,
+                locale1 -> ResourceBundle.getBundle(this.baseName, locale1, classLoader));
     }
 
     /**
@@ -91,7 +86,7 @@ public class I18n {
      * @return
      */
     public String get(String key) {
-        ResourceBundle resourceBundle = getResourceBundle(DEFAULT_SERVER_LOCAL);
+        ResourceBundle resourceBundle = getResourceBundle(Mi18nAPI.DEFAULT_SERVER_LOCAL);
         return resourceBundle.getString(key);
     }
 
@@ -102,8 +97,8 @@ public class I18n {
 
     public String get(Player player, String key, Object... param) {
         ResourceBundle resourceBundle = getResourceBundle(PLAYER_PARAM_MNG.getPlayerLocal(player));
-        MESSAGE_FORMAT.applyPattern(resourceBundle.getString(key));
-        return MESSAGE_FORMAT.format(param);
+        Mi18nAPI.getMessageFormat().applyPattern(resourceBundle.getString(key));
+        return Mi18nAPI.getMessageFormat().format(param);
     }
 
     //<editor-fold desc="default get">
