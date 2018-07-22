@@ -170,10 +170,10 @@ public abstract class AMyCommand<T extends JavaPlugin> extends Command implement
     /**
      * /!\ to do at the end /!\ to save the command.
      *
-     * @param commandMap via:<br/>
+     * @param commandMap via:<br>
      *                   <code>
-     *                   Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");<br/>
-     *                   f.setAccessible(true);<br/>
+     *                   Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");<br>
+     *                   f.setAccessible(true);<br>
      *                   CommandMap commandMap = (CommandMap) f.get(Bukkit.getServer());
      *                   </code>
      *
