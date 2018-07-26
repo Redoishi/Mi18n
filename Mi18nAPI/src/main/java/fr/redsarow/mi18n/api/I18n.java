@@ -79,7 +79,6 @@ public class I18n {
     }
 
     /**
-     * method use for write in console.
      *
      * @param key
      *
@@ -88,6 +87,12 @@ public class I18n {
     public String get(String key) {
         ResourceBundle resourceBundle = getResourceBundle(Mi18nAPI.DEFAULT_SERVER_LOCAL);
         return resourceBundle.getString(key);
+    }
+
+    public String get(String key, Object... param) {
+        ResourceBundle resourceBundle = getResourceBundle(Mi18nAPI.DEFAULT_SERVER_LOCAL);
+        Mi18nAPI.getMessageFormat().applyPattern(resourceBundle.getString(key));
+        return Mi18nAPI.getMessageFormat().format(param);
     }
 
     public String get(Player player, String key) {
