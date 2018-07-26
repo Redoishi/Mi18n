@@ -23,16 +23,21 @@ public class Mi18nAPI extends JavaPlugin {
 
     public static final double VERS_CONFIG = 1.0;
 
-    private static Logger LOGGER;
-    private static ResourceBundle LANGUAGE_BUNDLE;
-    private static MessageFormat MESSAGE_FORMAT;
-
     static Locale DEFAULT_SERVER_LOCAL = Locale.ENGLISH;
+
+    private static ResourceBundle LANGUAGE_BUNDLE;
+    private static Logger LOGGER;
+    private static MessageFormat MESSAGE_FORMAT;
 
     @Override
     public void onEnable() {
         try {
+            //preset
             LOGGER = getLogger();
+            LANGUAGE_BUNDLE = ResourceBundle.getBundle("Mi18nAPI_language", DEFAULT_SERVER_LOCAL);
+            MESSAGE_FORMAT = new MessageFormat("");
+            MESSAGE_FORMAT.setLocale(DEFAULT_SERVER_LOCAL);
+
 
             LOGGER.info("init config");
             if (!Config.checkConfig(this, "config.yml", "")) {
@@ -47,7 +52,6 @@ public class Mi18nAPI extends JavaPlugin {
                     config.getString("language", "en"),
                     config.getString("country", ""));
             LANGUAGE_BUNDLE = ResourceBundle.getBundle("Mi18nAPI_language", DEFAULT_SERVER_LOCAL);
-            MESSAGE_FORMAT = new MessageFormat("");
             MESSAGE_FORMAT.setLocale(DEFAULT_SERVER_LOCAL);
 
             LOGGER.info(LANGUAGE_BUNDLE.getString("init.language"));
