@@ -23,7 +23,7 @@ public class Mi18nUI extends JavaPlugin {
     @Override
     public void onEnable() {
         try{
-            i18n = new I18n(this.getClass(), "language",  Locale.ENGLISH, Locale.FRENCH);
+            i18n = new I18n(this.getClass(), "Mi18nUI",  Locale.ENGLISH, Locale.FRENCH);
             playerParamMng = PlayerParamMng.getInstance();
 
             getLogger().info(i18n.get("init.command"));
